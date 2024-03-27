@@ -8,10 +8,11 @@ const BASE_URL = "http://localhost:5000/api";
  */
 function generateCupcakeHTML(cupcake) {
   return `
-    <div data-cupcake-id=${cupcake.id}>
+    <div class="cupcake" data-cupcake-id="${cupcake.id}">
       <li>
         ${cupcake.flavor} / ${cupcake.size} / ${cupcake.rating}
-        <button class="delete-button">X</button>
+        <button class="edit-button">Edit</button>
+        <button class="delete-button">Delete</button>
       </li>
       <img class="Cupcake-img"
             src="${cupcake.image}"
@@ -24,14 +25,18 @@ function generateCupcakeHTML(cupcake) {
  * Put initial cupcakes on the page.
  */
 async function showInitialCupcakes() {
-  // Fetch initial cupcakes data from the API
-  const response = await axios.get(`${BASE_URL}/cupcakes`);
+  try {
+    // Fetch initial cupcakes data from the API
+    const response = await axios.get(`${BASE_URL}/cupcakes`);
 
-  // Iterate through each cupcake data and generate HTML for it
-  for (let cupcakeData of response.data.cupcakes) {
-    // Create a new jQuery object for the cupcake HTML and append it to the cupcakes list
-    let newCupcake = $(generateCupcakeHTML(cupcakeData));
-    $("#cupcakes-list").append(newCupcake);
+    // Iterate through each cupcake data and generate HTML for it
+    for (let cupcakeData of response.data.cupcakes) {
+      // Create a new jQuery object for the cupcake HTML and append it to the cupcakes list
+      let newCupcake = $(generateCupcakeHTML(cupcakeData));
+      $("#cupcakes-list").append(newCupcake);
+    }
+  } catch (error) {
+    console.error("Error fetching cupcakes:", error);
   }
 }
 
@@ -41,25 +46,29 @@ async function showInitialCupcakes() {
 $("#new-cupcake-form").on("submit", async function (evt) {
   evt.preventDefault();
 
-  // Extract form input values
-  let flavor = $("#form-flavor").val();
-  let rating = $("#form-rating").val();
-  let size = $("#form-size").val();
-  let image = $("#form-image").val();
+  try {
+    // Extract form input values
+    let flavor = $("#form-flavor").val();
+    let rating = $("#form-rating").val();
+    let size = $("#form-size").val();
+    let image = $("#form-image").val();
 
-  // Send a POST request to add the new cupcake
-  const newCupcakeResponse = await axios.post(`${BASE_URL}/cupcakes`, {
-    flavor,
-    rating,
-    size,
-    image
-  });
+    // Send a POST request to add the new cupcake
+    const newCupcakeResponse = await axios.post(`${BASE_URL}/cupcakes`, {
+      flavor,
+      rating,
+      size,
+      image
+    });
 
-  // Generate HTML for the new cupcake and append it to the cupcakes list
-  let newCupcake = $(generateCupcakeHTML(newCupcakeResponse.data.cupcake));
-  $("#cupcakes-list").append(newCupcake);
-  // Reset the form fields
-  $("#new-cupcake-form").trigger("reset");
+    // Generate HTML for the new cupcake and append it to the cupcakes list
+    let newCupcake = $(generateCupcakeHTML(newCupcakeResponse.data.cupcake));
+    $("#cupcakes-list").append(newCupcake);
+    // Reset the form fields
+    $("#new-cupcake-form").trigger("reset");
+  } catch (error) {
+    console.error("Error adding cupcake:", error);
+  }
 });
 
 /** 
@@ -68,12 +77,16 @@ $("#new-cupcake-form").on("submit", async function (evt) {
 $("#cupcakes-list").on("click", ".delete-button", async function (evt) {
   evt.preventDefault();
   // Find the closest cupcake div and extract its ID
-  let $cupcake = $(evt.target).closest("div");
+  let $cupcake = $(evt.target).closest(".cupcake");
   let cupcakeId = $cupcake.attr("data-cupcake-id");
-  // Send a DELETE request to delete the cupcake
-  await axios.delete(`${BASE_URL}/cupcakes/${cupcakeId}`);
-  // Remove the cupcake HTML from the page
-  $cupcake.remove();
+  try {
+    // Send a DELETE request to delete the cupcake
+    await axios.delete(`${BASE_URL}/cupcakes/${cupcakeId}`);
+    // Remove the cupcake HTML from the page
+    $cupcake.remove();
+  } catch (error) {
+    console.error("Error deleting cupcake:", error);
+  }
 });
 
 /** 
@@ -82,12 +95,12 @@ $("#cupcakes-list").on("click", ".delete-button", async function (evt) {
 $("#cupcakes-list").on("click", ".edit-button", function (evt) {
   evt.preventDefault();
   // Find the closest cupcake div and extract its ID
-  let $cupcake = $(evt.target).closest("div");
+  let $cupcake = $(evt.target).closest(".cupcake");
   let cupcakeId = $cupcake.attr("data-cupcake-id");
   // Get cupcake data
-  let flavor = $cupcake.find(".cupcake-flavor").text();
-  let size = $cupcake.find(".cupcake-size").text();
-  let rating = $cupcake.find(".cupcake-rating").text();
+  let flavor = $cupcake.find("li").text().trim().split(" / ")[0];
+  let size = $cupcake.find("li").text().trim().split(" / ")[1];
+  let rating = $cupcake.find("li").text().trim().split(" / ")[2];
   let image = $cupcake.find("img").attr("src");
   // Pre-fill update form with cupcake data
   $("#edit-flavor").val(flavor);
@@ -109,17 +122,21 @@ $("#edit-cupcake-form").on("submit", async function (evt) {
   let rating = $("#edit-rating").val();
   let size = $("#edit-size").val();
   let image = $("#edit-image").val();
-  // Send a PATCH request to update the cupcake
-  await axios.patch(`${BASE_URL}/cupcakes/${cupcakeId}`, {
-    flavor,
-    rating,
-    size,
-    image
-  });
-  // Hide the update form
-  $("#update-cupcake-form").hide();
-  // Refresh cupcakes list
-  await showInitialCupcakes();
+  try {
+    // Send a PATCH request to update the cupcake
+    await axios.patch(`${BASE_URL}/cupcakes/${cupcakeId}`, {
+      flavor,
+      rating,
+      size,
+      image
+    });
+    // Hide the update form
+    $("#update-cupcake-form").hide();
+    // Refresh cupcakes list
+    await showInitialCupcakes();
+  } catch (error) {
+    console.error("Error updating cupcake:", error);
+  }
 });
 
 /** 
@@ -130,7 +147,6 @@ $("#cancel-update").on("click", function (evt) {
   // Hide the update form
   $("#update-cupcake-form").hide();
 });
-
 
 // Call the function to show initial cupcakes when the page loads
 $(showInitialCupcakes);
