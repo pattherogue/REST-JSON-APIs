@@ -106,3 +106,22 @@ def remove_cupcake(cupcake_id):
     db.session.commit()
     # Return a confirmation message as JSON
     return jsonify(message="Deleted")
+
+# Define route to update a cupcake
+@app.route("/api/cupcakes/<int:cupcake_id>", methods=["PATCH"])
+def update_cupcake(cupcake_id):
+    """Update cupcake from data in request. Return updated data."""
+    # Get the JSON data from the request
+    data = request.json
+    # Query the cupcake to update from the database
+    cupcake = Cupcake.query.get_or_404(cupcake_id)
+    # Update cupcake attributes with data from the request
+    cupcake.flavor = data.get('flavor', cupcake.flavor)
+    cupcake.rating = data.get('rating', cupcake.rating)
+    cupcake.size = data.get('size', cupcake.size)
+    cupcake.image = data.get('image', cupcake.image)
+    # Commit changes to the database
+    db.session.commit()
+    # Return the updated cupcake data as JSON
+    return jsonify(cupcake=cupcake.to_dict())
+

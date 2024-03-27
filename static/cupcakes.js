@@ -76,5 +76,61 @@ $("#cupcakes-list").on("click", ".delete-button", async function (evt) {
   $cupcake.remove();
 });
 
+/** 
+ * Handle click event for editing a cupcake.
+ */
+$("#cupcakes-list").on("click", ".edit-button", function (evt) {
+  evt.preventDefault();
+  // Find the closest cupcake div and extract its ID
+  let $cupcake = $(evt.target).closest("div");
+  let cupcakeId = $cupcake.attr("data-cupcake-id");
+  // Get cupcake data
+  let flavor = $cupcake.find(".cupcake-flavor").text();
+  let size = $cupcake.find(".cupcake-size").text();
+  let rating = $cupcake.find(".cupcake-rating").text();
+  let image = $cupcake.find("img").attr("src");
+  // Pre-fill update form with cupcake data
+  $("#edit-flavor").val(flavor);
+  $("#edit-size").val(size);
+  $("#edit-rating").val(rating);
+  $("#edit-image").val(image);
+  // Show the update form
+  $("#update-cupcake-form").show().attr("data-cupcake-id", cupcakeId);
+});
+
+/** 
+ * Handle form submission for updating a cupcake.
+ */
+$("#edit-cupcake-form").on("submit", async function (evt) {
+  evt.preventDefault();
+  // Extract form input values
+  let cupcakeId = $("#update-cupcake-form").attr("data-cupcake-id");
+  let flavor = $("#edit-flavor").val();
+  let rating = $("#edit-rating").val();
+  let size = $("#edit-size").val();
+  let image = $("#edit-image").val();
+  // Send a PATCH request to update the cupcake
+  await axios.patch(`${BASE_URL}/cupcakes/${cupcakeId}`, {
+    flavor,
+    rating,
+    size,
+    image
+  });
+  // Hide the update form
+  $("#update-cupcake-form").hide();
+  // Refresh cupcakes list
+  await showInitialCupcakes();
+});
+
+/** 
+ * Handle click event for canceling update.
+ */
+$("#cancel-update").on("click", function (evt) {
+  evt.preventDefault();
+  // Hide the update form
+  $("#update-cupcake-form").hide();
+});
+
+
 // Call the function to show initial cupcakes when the page loads
 $(showInitialCupcakes);
