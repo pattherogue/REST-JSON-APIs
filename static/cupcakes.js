@@ -10,13 +10,13 @@ function generateCupcakeHTML(cupcake) {
   return `
     <div class="cupcake" data-cupcake-id="${cupcake.id}">
       <li>
-        ${cupcake.flavor} / ${cupcake.size} / ${cupcake.rating}
+        Flavor: ${cupcake.flavor} / Size: ${cupcake.size} / Rating: ${cupcake.rating}
         <button class="edit-button">Edit</button>
         <button class="delete-button">Delete</button>
       </li>
       <img class="Cupcake-img"
             src="${cupcake.image}"
-            alt="(no image provided)">
+            alt="Cupcake Image">
     </div>
   `;
 }
@@ -37,6 +37,7 @@ async function showInitialCupcakes() {
     }
   } catch (error) {
     console.error("Error fetching cupcakes:", error);
+    alert("Error fetching cupcakes. Please try again later.");
   }
 }
 
@@ -66,8 +67,10 @@ $("#new-cupcake-form").on("submit", async function (evt) {
     $("#cupcakes-list").append(newCupcake);
     // Reset the form fields
     $("#new-cupcake-form").trigger("reset");
+    alert("Cupcake added successfully!");
   } catch (error) {
     console.error("Error adding cupcake:", error);
+    alert("Error adding cupcake. Please try again later.");
   }
 });
 
@@ -84,8 +87,10 @@ $("#cupcakes-list").on("click", ".delete-button", async function (evt) {
     await axios.delete(`${BASE_URL}/cupcakes/${cupcakeId}`);
     // Remove the cupcake HTML from the page
     $cupcake.remove();
+    alert("Cupcake deleted successfully!");
   } catch (error) {
     console.error("Error deleting cupcake:", error);
+    alert("Error deleting cupcake. Please try again later.");
   }
 });
 
@@ -134,8 +139,10 @@ $("#edit-cupcake-form").on("submit", async function (evt) {
     $("#update-cupcake-form").hide();
     // Refresh cupcakes list
     await showInitialCupcakes();
+    alert("Cupcake updated successfully!");
   } catch (error) {
     console.error("Error updating cupcake:", error);
+    alert("Error updating cupcake. Please try again later.");
   }
 });
 

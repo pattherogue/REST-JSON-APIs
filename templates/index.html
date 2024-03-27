@@ -26,19 +26,19 @@
   <div>
     <label for="form-flavor">Flavor: </label>
     <!-- Input field for cupcake flavor -->
-    <input name="flavor" id="form-flavor">
+    <input name="flavor" id="form-flavor" required>
   </div>
 
   <div>
     <label for="form-size">Size: </label>
     <!-- Input field for cupcake size -->
-    <input name="size" id="form-size">
+    <input name="size" id="form-size" required>
   </div>
 
   <div>
     <label for="form-rating">Rating: </label>
     <!-- Input field for cupcake rating -->
-    <input type="number" name="rating" id="form-rating">
+    <input type="number" name="rating" id="form-rating" required>
   </div>
 
   <div>
@@ -48,7 +48,7 @@
   </div>
 
   <!-- Submit button for adding a new cupcake -->
-  <button>Add!</button>
+  <button type="submit">Add!</button>
 </form>
 
 <!-- Update form for editing a cupcake -->
@@ -57,15 +57,15 @@
   <form id="edit-cupcake-form">
     <div>
       <label for="edit-flavor">Flavor: </label>
-      <input type="text" name="edit-flavor" id="edit-flavor">
+      <input type="text" name="edit-flavor" id="edit-flavor" required>
     </div>
     <div>
       <label for="edit-size">Size: </label>
-      <input type="text" name="edit-size" id="edit-size">
+      <input type="text" name="edit-size" id="edit-size" required>
     </div>
     <div>
       <label for="edit-rating">Rating: </label>
-      <input type="number" name="edit-rating" id="edit-rating">
+      <input type="number" name="edit-rating" id="edit-rating" required>
     </div>
     <div>
       <label for="edit-image">Image: </label>
@@ -75,6 +75,9 @@
     <button id="cancel-update">Cancel</button>
   </form>
 </div>
+
+<!-- Error message container -->
+<div id="error-message" style="display: none;"></div>
 
 <!-- Include jQuery library -->
 <script src="https://unpkg.com/jquery"></script>
