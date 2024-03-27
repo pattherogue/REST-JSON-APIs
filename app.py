@@ -1,9 +1,11 @@
 # Import necessary modules and classes from Flask and the custom models module
 from flask import Flask, request, jsonify, render_template
 from models import db, connect_db, Cupcake
+from flask_cors import CORS
 
 # Create Flask app instance
 app = Flask(__name__)
+CORS(app)
 
 # Configure app to connect to the PostgreSQL database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///cupcakes'

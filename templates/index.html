@@ -51,6 +51,32 @@
   <button>Add!</button>
 </form>
 
+<!-- Update form for editing a cupcake -->
+<div id="update-cupcake-form" style="display: none;">
+  <h2>Edit Cupcake</h2>
+  <form id="edit-cupcake-form">
+    <div>
+      <label for="edit-flavor">Flavor: </label>
+      <input type="text" name="edit-flavor" id="edit-flavor">
+    </div>
+    <div>
+      <label for="edit-size">Size: </label>
+      <input type="text" name="edit-size" id="edit-size">
+    </div>
+    <div>
+      <label for="edit-rating">Rating: </label>
+      <input type="number" name="edit-rating" id="edit-rating">
+    </div>
+    <div>
+      <label for="edit-image">Image: </label>
+      <input type="text" name="edit-image" id="edit-image">
+    </div>
+    <button type="submit">Update</button>
+    <button id="cancel-update">Cancel</button>
+  </form>
+</div>
+
+
 <!-- Include jQuery library -->
 <script src="https://unpkg.com/jquery"></script>
 <!-- Include Axios library -->
