@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a Flask-based web application built with Python, offering an API for managing cupcakes. Using Python's Flask framework, the API facilitates creating, retrieving, updating, and deleting cupcake entries in a PostgreSQL database. Additionally, the application includes unit tests written in Python to ensure the functionality and reliability of the API endpoints.
+This project is a Flask-based web application built with Python, offering an API for managing inventory. Using Python's Flask framework, the API facilitates creating, retrieving, updating, and deleting cupcake entries in a PostgreSQL database. Additionally, the application includes unit tests written in Python to ensure the functionality and reliability of the API endpoints.
 
 ## Project Structure
 
