@@ -1,4 +1,4 @@
-# Cupcake Management API
+# Rest JSON API
 
 ## Overview
 
