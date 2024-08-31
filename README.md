@@ -61,7 +61,3 @@ pytest tests.py
 ## License
 
 This project is licensed under the MIT License. See the `LICENSE` file for details.
-
----
-
-Would you like to make any adjustments or include additional details in this draft?
